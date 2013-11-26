@@ -1,0 +1,8 @@
+---
+applications:
+- name: cli
+  memory: 128M
+  instances: 1
+  host: cli
+  domain: cfapps.io
+  path: .
