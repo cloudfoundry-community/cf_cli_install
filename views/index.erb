@@ -4,7 +4,7 @@
   <ul>
     <% cli_release_asset_names_to_labels.each do |name, asset| %>
     <li>
-      <a href='<%= asset["url"] %>'><%= name %></a>
+      <a href='<%= asset["url"] %>' download="<%= asset["name"] %>"><%= name %></a>
     </li>
     <% end %>
   </ul>
