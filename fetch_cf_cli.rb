@@ -38,6 +38,10 @@ class FetchCfCli < Sinatra::Base
     latest_cli_release["assets"]
   end
 
+  def cli_release_name
+    latest_cli_release["name"]
+  end
+
   def latest_cli_release
     cli_releases.first
   end
