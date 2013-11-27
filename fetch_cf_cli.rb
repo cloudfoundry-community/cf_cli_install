@@ -5,6 +5,7 @@ require 'httparty'
 class FetchCfCli < Sinatra::Base
   set :static, true
   enable :sessions
+  attr_reader :github_access_token
 
   def initialize(*args)
     super
@@ -17,6 +18,10 @@ class FetchCfCli < Sinatra::Base
 
   get '/' do
     erb :index, format: :html5, layout: false
+  end
+
+  get '/install.sh' do
+    erb :install, format: :plain, layout: false
   end
 
   # Convert labels like:
@@ -60,11 +65,23 @@ class FetchCfCli < Sinatra::Base
   end
 
   def cli_releases_headers
-    raise "Must set @github_access_token first" unless @github_access_token
-    { headers: { "Authorization" => "token #{@github_access_token}", "User-Agent" => "fetch_cf_cli by Dr Nic Williams" } }
+    raise "Must set @github_access_token first" unless github_access_token
+    { headers: { "Authorization" => "token #{github_access_token}", "User-Agent" => "fetch_cf_cli by Dr Nic Williams" } }
   end
 
-  def hostname
-    URI::Generic.build({scheme: request.scheme, host: request.host, port: request.port})
+  def request_hostname
+    URI::Generic.build(scheme: request.scheme, host: request.host, port: request.port)
+  end
+
+  def darwin_amd64_asset
+    cli_release_assets.find {|asset| asset["name"] == "#{cli_name}-darwin-amd64.tgz" }
+  end
+
+  def linux_amd64_asset
+    cli_release_assets.find {|asset| asset["name"] == "#{cli_name}-linux-amd64.tgz" }
+  end
+
+  def cli_name
+    "gcf"
   end
 end
