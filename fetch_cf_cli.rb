@@ -57,6 +57,7 @@ class FetchCfCli < Sinatra::Base
   end
 
   def cli_releases_headers
+    raise "Must set @github_access_token first" unless @github_access_token
     { headers: { "Authorization" => "token #{@github_access_token}", "User-Agent" => "fetch_cf_cli by Dr Nic Williams" } }
   end
 end
