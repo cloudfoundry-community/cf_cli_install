@@ -3,8 +3,8 @@ release_name="<%= cli_release_name %>"
 darwin_amd64_filename="<%= darwin_amd64_asset["name"] %>"
 darwin_amd64_url="<%= darwin_amd64_asset["url"] %>"
 
-lunix_amd64_filename="<%= linux_amd64_asset["name"] %>"
-lunix_amd64_url="<%= linux_amd64_asset["url"] %>"
+linux_amd64_filename="<%= linux_amd64_asset["name"] %>"
+linux_amd64_url="<%= linux_amd64_asset["url"] %>"
 
 tmp_unarchive_path=${TMPDIR:-/tmp}
 
@@ -31,9 +31,17 @@ fi
 if [[ $os_name == "Darwin" ]]; then
   export download_url=$darwin_amd64_url
   export filename=$tmp_unarchive_path/$darwin_amd64_filename
+  function say_green {
+    echo "\x1B[0;32m$@\x1B[0m"
+  }
+
 elif [[ $os_name == "Linux" ]]; then
   export download_url=$linux_amd64_url
   export filename=$tmp_unarchive_path/$linux_amd64_filename
+  function say_green {
+    echo -e "\e[0;32m$@\e[0m"
+  }
+
 else
   echo "Sorry, currently only OS X & Linux versions of $cli_name are being released"
   echo "Please create a ticket to request $os_name $os_hardware releases to be cut; or build the CLI from source"
@@ -64,4 +72,4 @@ if [[ -f $filename ]]; then
 fi
 
 echo "Now run the following to use Cloud Foundry CLI:"
-echo "$green./$cli_name$clear"
+say_green "./$cli_name"

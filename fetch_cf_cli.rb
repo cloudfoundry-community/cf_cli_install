@@ -4,6 +4,7 @@ require 'httparty'
 
 class FetchCfCli < Sinatra::Base
   set :static, true
+  set :logging, true
   enable :sessions
   attr_reader :github_access_token
 
