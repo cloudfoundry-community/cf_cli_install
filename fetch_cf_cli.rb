@@ -70,7 +70,8 @@ class FetchCfCli < Sinatra::Base
   end
 
   def request_hostname
-    URI::Generic.build(scheme: request.scheme, host: request.host, port: request.port)
+    hostname = URI::Generic.build(scheme: request.scheme, host: request.host, port: request.port).to_s
+    hostname.gsub(/:80/, '')
   end
 
   def darwin_amd64_asset
