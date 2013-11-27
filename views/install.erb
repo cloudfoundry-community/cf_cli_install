@@ -8,6 +8,10 @@ lunix_amd64_url="<%= linux_amd64_asset["url"] %>"
 
 tmp_unarchive_path=${TMPDIR:-/tmp}
 
+# http://www.csc.uvic.ca/~sae/seng265/fall04/tips/s265s047-tips/bash-using-colors.html
+green='\x1B[0;32m'
+clear='\x1B[0m'
+
 # $ man uname
 # -a      Behave as though all of the options -mnrsv were specified.
 # -m      print the machine hardware name.
@@ -60,4 +64,4 @@ if [[ -f $filename ]]; then
 fi
 
 echo "Now run the following to use Cloud Foundry CLI:"
-echo "./$cli_name"
+echo "$green./$cli_name$clear"
