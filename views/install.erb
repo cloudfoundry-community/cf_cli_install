@@ -27,8 +27,10 @@ fi
 if [[ $os_name == "Darwin" ]]; then
   export download_url=$darwin_amd64_url
   export filename=$tmp_unarchive_path/$darwin_amd64_filename
+  # colors not working when piping to bash shell
   function say_green {
-    echo "\x1B[0;32m$@\x1B[0m"
+    # echo "\x1B[0;32m$@\x1B[0m"
+    echo $@
   }
 
 elif [[ $os_name == "Linux" ]]; then
