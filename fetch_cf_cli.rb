@@ -3,6 +3,9 @@ require 'json/pure'
 require 'httparty'
 
 class FetchCfCli < Sinatra::Base
+  set :static, true
+  enable :sessions
+
   def initialize(*args)
     super
     unless @github_access_token = ENV['GITHUB_ACCESS_TOKEN']
@@ -59,5 +62,9 @@ class FetchCfCli < Sinatra::Base
   def cli_releases_headers
     raise "Must set @github_access_token first" unless @github_access_token
     { headers: { "Authorization" => "token #{@github_access_token}", "User-Agent" => "fetch_cf_cli by Dr Nic Williams" } }
+  end
+
+  def hostname
+    URI::Generic.build({scheme: request.scheme, host: request.host, port: request.port})
   end
 end
