@@ -1,7 +1,7 @@
 ---
 applications:
 - name: cli
-  memory: 128M
+  memory: 256M
   instances: 1
   host: cli
   domain: cfapps.io
