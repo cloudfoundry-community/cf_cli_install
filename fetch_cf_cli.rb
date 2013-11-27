@@ -17,7 +17,7 @@ class FetchCfCli < Sinatra::Base
 
   get '/' do
     fetch_latest_release_and_setup_session_variables
-    erb :index, format: :html5, layout: false
+    erb :index, format: :html5
   end
 
   get '/install.sh' do
