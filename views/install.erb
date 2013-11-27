@@ -1,10 +1,10 @@
 release_name="<%= cli_release_name %>"
 
-darwin_amd64_filename="<%= darwin_amd64_asset["name"] %>"
-darwin_amd64_url="<%= darwin_amd64_asset["url"] %>"
+darwin_amd64_filename="<%= cli_release_asset_darwin_amd64["name"] %>"
+darwin_amd64_url="<%= cli_release_asset_darwin_amd64["url"] %>"
 
-linux_amd64_filename="<%= linux_amd64_asset["name"] %>"
-linux_amd64_url="<%= linux_amd64_asset["url"] %>"
+linux_amd64_filename="<%= cli_release_asset_linux_amd64["name"] %>"
+linux_amd64_url="<%= cli_release_asset_linux_amd64["url"] %>"
 
 tmp_unarchive_path=${TMPDIR:-/tmp}
 

@@ -16,41 +16,33 @@ class FetchCfCli < Sinatra::Base
   end
 
   get '/' do
+    fetch_latest_release_and_setup_session_variables
     erb :index, format: :html5, layout: false
   end
 
   get '/install.sh' do
+    fetch_latest_release_and_setup_session_variables
     erb :install, format: :plain, layout: false
   end
 
-  # Convert labels like:
-  # ["gcf-darwin-amd64.tgz", "gcf-linux-amd64.tgz", "gcf-windows-386.zip", "gcf-windows-amd64.zip"]
-  # into names like:
-  # ["darwin-amd64", "linux-amd64", "windows-386", "windows-amd64"]
-  # and return them as an Array of { name => asset }
-  def cli_release_asset_names_to_labels
-    cli_release_assets.inject({}) do |result, asset|
-      label = asset["label"]
-      name = if label =~ /cf-(.*)\.(tgz|zip)/
-        $1
-      else
-        label
-      end
-      result[name] = asset
-      result
-    end
-  end
-
-  def cli_release_assets
-    latest_cli_release["assets"]
+  def fetch_latest_release_and_setup_session_variables
+    latest_cli_release = cli_releases.first
+    session[:cli_release_name] = latest_cli_release["name"]
+    cli_release_assets = latest_cli_release["assets"]
+    session[:cli_release_asset_darwin_amd64] = darwin_amd64_asset(cli_release_assets)
+    session[:cli_release_asset_linux_amd64] = linux_amd64_asset(cli_release_assets)
   end
 
   def cli_release_name
-    latest_cli_release["name"]
+    session[:cli_release_name]
   end
 
-  def latest_cli_release
-    cli_releases.first
+  def cli_release_asset_darwin_amd64
+    session[:cli_release_asset_darwin_amd64]
+  end
+
+  def cli_release_asset_linux_amd64
+    session[:cli_release_asset_linux_amd64]
   end
 
   def cli_releases
@@ -73,11 +65,11 @@ class FetchCfCli < Sinatra::Base
     hostname.gsub(/:80/, '')
   end
 
-  def darwin_amd64_asset
+  def darwin_amd64_asset(cli_release_assets)
     cli_release_assets.find {|asset| asset["name"] == "#{cli_name}-darwin-amd64.tgz" }
   end
 
-  def linux_amd64_asset
+  def linux_amd64_asset(cli_release_assets)
     cli_release_assets.find {|asset| asset["name"] == "#{cli_name}-linux-amd64.tgz" }
   end
 
