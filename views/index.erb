@@ -9,10 +9,11 @@
       <li>
         <div class="group row">
           <div class="col-1">
-            <p>Install CLI for OS/X and Linux</p>
+            <p>Target any public or private Cloud Foundry</p>
           </div>
           <div class="col-2">
-            <pre><code><span style="color: #e3d796;">$</span> curl -s <%= request_hostname %>/install.sh | bash</code></pre>
+            <pre><code><span style="color: #e3d796;">$</span> <%= cli_name %> api https://api.run.pivotal.io
+<span style="color: #e3d796;">$</span> <%= cli_name %> login</code></pre>
           </div>
         </div>
       </li>
@@ -20,12 +21,64 @@
       <li>
         <div class="group row">
           <div class="col-1">
-            <p>Download CLI for Windows</p>
+            <p>Deploy your application to any Cloud Foundry in under a minute</p>
           </div>
           <div class="col-2">
+            <pre><code><span style="color: #e3d796;">$</span> <%= cli_name %> push NAME</code></pre>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="group row">
+          <div class="col-1">
+            <p>Streaming logs from your running application</p>
+          </div>
+          <div class="col-2">
+            <pre><code><span style="color: #e3d796;">$</span> <%= cli_name %> logs NAME</code></pre>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="group row">
+          <h2>Install CLI for OS/X and Linux</h2>
+          <pre style="clear:both;text-align:center;margin:0 -3em;margin-bottom:0.9em"><code id="selectable" onclick="selectText()">curl -s <%= request_hostname %>/install.sh | bash</code></pre>
+          <div class="col-1">
+            <p>Paste that at a Terminal prompt within a folder in your $PATH.</p>
+          </div>
+          <div class="col-2">
+            <p>The script only places the <code><%= cli_name %></code> executable in your current folder.</p>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="group row">
+          <h2>Download CLI for Windows</h2>
+          <p id="selectable" style="clear:both;text-align:center;margin:0 -3em;margin-bottom:0.9em">
             <a download="<%= cli_release_asset_windows_amd64['name'] %>" href="<%= cli_release_asset_windows_amd64['url'] %>">64bit</a>
             |
             <a download="<%= cli_release_asset_windows_386['name'] %>" href="<%= cli_release_asset_windows_386['url'] %>">32bit</a>
+          </p>
+          <div class="col-1">
+            <p>1. Click to download then unarchive the ZIP file</p>
+          </div>
+          <div class="col-2">
+            <p>2. Move <code><%= cli_name %></code> into your <code>%PATH%</code></p>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="group row">
+          <h2>Documentation</h2>
+          <div class="button">
+            <p>
+              <a href="http://docs.cloudfoundry.com/docs/using/managing-apps/cf/go-cli.html">Getting Started with CLI</a>
+              &nbsp;
+              <a href="http://docs.cloudfoundry.com/">Using and Running Cloud Foundry</a>
+            </p>
           </div>
         </div>
       </li>
