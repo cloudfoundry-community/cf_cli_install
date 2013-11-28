@@ -29,8 +29,10 @@ class FetchCfCli < Sinatra::Base
     latest_cli_release = cli_releases.first
     session[:cli_release_name] = latest_cli_release["name"]
     cli_release_assets = latest_cli_release["assets"]
-    session[:cli_release_asset_darwin_amd64] = darwin_amd64_asset(cli_release_assets)
-    session[:cli_release_asset_linux_amd64] = linux_amd64_asset(cli_release_assets)
+    session[:cli_release_asset_darwin_amd64]  = cli_release_asset(cli_release_assets, "darwin")
+    session[:cli_release_asset_linux_amd64]   = cli_release_asset(cli_release_assets, "linux")
+    session[:cli_release_asset_windows_amd64] = cli_release_asset(cli_release_assets, "windows", "amd64")
+    session[:cli_release_asset_windows_386]   = cli_release_asset(cli_release_assets, "windows", "386")
   end
 
   def cli_release_name
@@ -43,6 +45,14 @@ class FetchCfCli < Sinatra::Base
 
   def cli_release_asset_linux_amd64
     session[:cli_release_asset_linux_amd64]
+  end
+
+  def cli_release_asset_windows_amd64
+    session[:cli_release_asset_windows_amd64]
+  end
+
+  def cli_release_asset_windows_386
+    session[:cli_release_asset_windows_386]
   end
 
   def cli_releases
@@ -65,12 +75,9 @@ class FetchCfCli < Sinatra::Base
     hostname.gsub(/:80/, '')
   end
 
-  def darwin_amd64_asset(cli_release_assets)
-    cli_release_assets.find {|asset| asset["name"] == "#{cli_name}-darwin-amd64.tgz" }
-  end
-
-  def linux_amd64_asset(cli_release_assets)
-    cli_release_assets.find {|asset| asset["name"] == "#{cli_name}-linux-amd64.tgz" }
+  # +platform+ - windows, linux, darwin
+  def cli_release_asset(cli_release_assets, platform, arch = "amd64")
+    cli_release_assets.find {|asset| asset["name"] =~ /#{platform}-#{arch}/ }
   end
 
   def cli_name
