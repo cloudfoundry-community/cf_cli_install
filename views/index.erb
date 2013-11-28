@@ -1,45 +1,34 @@
-<a href="https://github.com/cloudfoundry-community/fetch_cf_cli"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
-<div class="contain-to-grid">
-  <nav class="top-bar">
-    <ul class="title-area">
-      <!-- Title Area -->
-      <li class="name">Cloud Foundry CLI Installer</li>
-      <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+<div id="wrap">
+  <div id="header">
+    <h1><a href="./">Cloud Foundry CLI</a></h1>
+    <p id="subtitle"><strong>One-line command to download, unpackage the right Cloud Foundry CLI for your machine</strong></p>
+  </div>
+
+  <div id="informations">
+    <ul>
+      <li>
+        <div class="group row">
+          <div class="col-1">
+            <p>Install CLI for OS/X and Linux</p>
+          </div>
+          <div class="col-2">
+            <pre><code><span style="color: #e3d796;">$</span> curl -s <%= request_hostname %>/install.sh | bash</code></pre>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="group row">
+          <div class="col-1">
+            <p>Download CLI for Windows</p>
+          </div>
+          <div class="col-2">
+            <a download="<%= cli_release_asset_windows_amd64['name'] %>" href="<%= cli_release_asset_windows_amd64['url'] %>">64bit</a>
+            |
+            <a download="<%= cli_release_asset_windows_386['name'] %>" href="<%= cli_release_asset_windows_386['url'] %>">32bit</a>
+          </div>
+        </div>
+      </li>
     </ul>
-
-    <section class="top-bar-section">
-      <!-- Left Nav Section -->
-      <ul class="right">
-        <li><a href="https://github.com/cloudfoundry/cli">cli project</a></li>
-      </ul>
-    </section>
-  </nav>
-</div>
-
-<div class="row">
-  <div class="large-12 columns">
-    <h2><%= cli_release_name %></h2>
-
-    <p>One-line command to download, unpackage the right Cloud Foundry CLI for your machine.</p>
-  </div>
-</div>
-<div class="row">
-  <div class="large-8 columns">
-    <p>OS X, Linux:</p>
-
-    <pre>
-curl -s <%= request_hostname %>/install.sh | bash
-    </pre>
-
-    <p>Windows:</p>
-    <p>Click to download:
-      <a download="<%= cli_release_asset_windows_amd64['name'] %>" href="<%= cli_release_asset_windows_amd64['url'] %>">64bit</a>
-      |
-      <a download="<%= cli_release_asset_windows_386['name'] %>" href="<%= cli_release_asset_windows_386['url'] %>">32bit</a>
-    </p>
-  </div>
-  <div class="large-4 columns">
-    <img src="/images/cloudfoundry-community.png">
   </div>
 </div>
