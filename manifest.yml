@@ -4,5 +4,4 @@ applications:
   memory: 256M
   instances: 1
   host: cli
-  domain: cfapps.io
   path: .
