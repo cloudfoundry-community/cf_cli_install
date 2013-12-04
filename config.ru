@@ -1,3 +1,3 @@
-require './fetch_cf_cli'
+require './cf_cli_install'
 
-run FetchCfCli.new
+run CfCliInstall.new

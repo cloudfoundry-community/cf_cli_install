@@ -65,7 +65,7 @@ if [[ -f $filename ]]; then
     export cli_name=$(unzip -l $filename | head -n 1)
   else
     echo "Oops, I do not know how to unpackage $filename."
-    echo "Please create a ticket at https://github.com/cloudfoundry-community/fetch_cf_cli/issues/new"
+    echo "Please create a ticket at https://github.com/cloudfoundry-community/cf_cli_install/issues/new"
   fi
 fi
 

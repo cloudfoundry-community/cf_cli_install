@@ -2,7 +2,7 @@ require 'sinatra/base'
 require 'json/pure'
 require 'httparty'
 
-class FetchCfCli < Sinatra::Base
+class CfCliInstall < Sinatra::Base
   enable :sessions
   attr_reader :github_access_token
 
@@ -67,7 +67,7 @@ class FetchCfCli < Sinatra::Base
 
   def cli_releases_headers
     raise "Must set @github_access_token first" unless github_access_token
-    { headers: { "Authorization" => "token #{github_access_token}", "User-Agent" => "fetch_cf_cli by Dr Nic Williams" } }
+    { headers: { "Authorization" => "token #{github_access_token}", "User-Agent" => "cf_cli_install by Dr Nic Williams" } }
   end
 
   def request_hostname
