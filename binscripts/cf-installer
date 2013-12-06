@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+# $ man uname
+# -a      Behave as though all of the options -mnrsv were specified.
+# -m      print the machine hardware name.
+# -s      print the operating system name.
+
+#         $os_name $os_hardware
+# OS X -  Darwin   x86_64
+# Linux - Linux    x86_64
+os_name=$(uname -s)
+os_hardware=$(uname -m)
+
+if [[ $os_hardware != "x86_64" ]]; then
+  echo "Sorry, currently only 64-bit versions of $cli_name are being released"
+  exit 1
+fi
+
+version_or_latest=${1:-latest}                # alternately, 'version' to get latest versioned release
+base_installer_url=${2:-http://cli.cfapps.io} # pass 'http://localhost:9393' in local development
+bin_dir=$3
+if [ "$bin_dir" == "" ]; then
+  if [[ $EUID -ne 0 ]]; then
+    bin_dir="$HOME/bin"
+    source_line="export PATH=\$PATH:\$HOME/bin"
+  else
+    bin_dir="/usr/bin"
+    source_line="export PATH=\$PATH:${bin_dir}"
+  fi
+fi
+
+
+display_error() {
+  tput sgr0
+  tput setaf 1
+  echo "ERROR: $1"
+  tput sgr0
+  exit 1
+}
+
+update_profile() {
+  [ -f $1 ] || return 1
+
+  cat $1 | grep "$source_line" > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "$source_line" >> $1
+  fi
+  export source_file=$1
+}
+
+[ "$bin_dir" == "" ] && display_error "No destination specified!"
+[ -d $bin_dir ] || mkdir -p $bin_dir > /dev/null 2>&1 || display_error "Failed to create $bin_dir"
+[ -z `which curl` ] && display_error "Could not find curl
+
+  linux: apt-get install curl
+  mac:   brew install curl
+"
+
+if [ "$os_name" == "Linux" ]; then
+  update_profile $HOME/.zshrc || update_profile $HOME/.bashrc || update_profile $HOME/.bash_profile
+  asset_filename="cf.tgz"
+elif [ "$os_name" == "Darwin" ]; then
+  update_profile $HOME/.zshrc || update_profile $HOME/.profile || update_profile $HOME/.bash_profile
+  asset_filename="cf.tgz"
+fi
+
+if [ "$?" != "0" ]; then
+  echo 'Unable to locate profile settings file'
+  echo
+  echo " You will have to manually add the following line:"
+  echo
+  echo "  $source_line"
+  echo
+fi
+
+current_dir=$(pwd)
+
+tmp_unarchive_dir=${TMPDIR:-/tmp}
+download_dir="$tmp_unarchive_dir/cf-installer"
+rm -rf ${download_dir}
+mkdir -p ${download_dir}
+download_file=${download_dir}/${asset_filename}
+
+cf_name_version="cf v6"
+download_url="${base_installer_url}/${version_or_latest}/${os_name}/${os_hardware}"
+echo $download_url
+
+echo "Downloading..."
+curl -L -H "Accept: application/octet-stream" $download_url -o ${download_file}
+
+cd $bin_dir
+if [[ -f ${download_file} ]]; then
+  if [[ ${download_file} =~ "tgz" ]]; then
+    tar xf ${download_file}
+    export cli_name=$(tar tf ${download_file} | head -n 1)
+  elif [[ ${download_file} =~ "zip" ]]; then
+    unzip ${download_file}
+    export cli_name=$(unzip -l ${download_file} | head -n 1)
+  else
+    echo "Oops, I do not know how to unpackage ${download_file}."
+    echo "Please create a ticket at https://github.com/cloudfoundry-community/cf_cli_install/issues/new"
+    exit 1
+  fi
+fi
+
+cd $current_path
+
+echo "Installed $cf_name_version"
+echo
+echo "Please restart your terminal session or to get started right away run:"
+echo " source ${source_file}"
+echo
+echo "Run ${cli_name} to see help"
+echo

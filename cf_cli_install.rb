@@ -3,7 +3,6 @@ require 'json/pure'
 require 'httparty'
 
 class CfCliInstall < Sinatra::Base
-  enable :sessions
   attr_reader :github_access_token
 
   def initialize(*args)
@@ -16,43 +15,52 @@ class CfCliInstall < Sinatra::Base
   end
 
   get '/' do
-    fetch_latest_release_and_setup_session_variables
+    fetch_latest_release
     erb :index, format: :html5
   end
 
-  get '/install.sh' do
-    fetch_latest_release_and_setup_session_variables
-    erb :install, format: :plain, layout: false
+  get '/release/:os_name/:os_hardware' do
+    fetch_latest_release
+    os_name = params[:os_name]
+    os_hardware = params[:os_hardware]
+    os_hardware = "amd64" if os_hardware =~ /64/
+    os_hardware = "386" if os_hardware =~ /32/
+
+    asset = cli_release_asset(@cli_release_assets, os_name.downcase, os_hardware)
+    redirect to(asset["url"]) if asset
   end
 
-  def fetch_latest_release_and_setup_session_variables
+  get '/latest/:os_name/:os_hardware' do
+    os_name = params[:os_name].downcase
+    os_hardware = params[:os_hardware]
+    os_hardware = "amd64" if os_hardware =~ /64/
+    os_hardware = "386" if os_hardware =~ /32/
+    url = if os_name == "darwin"
+      "http://go-cli.s3.amazonaws.com/gcf-darwin-amd64.tgz"
+    elsif os_name == "linux"
+      if os_hardware == "386"
+        "http://go-cli.s3.amazonaws.com/gcf-linux-386.tgz"
+      else
+        "http://go-cli.s3.amazonaws.com/gcf-linux-amd64.tgz"
+      end
+    elsif os_name == "windows"
+      if os_hardware == "386"
+        "http://go-cli.s3.amazonaws.com/gcf-windows-386.zip"
+      else
+        "http://go-cli.s3.amazonaws.com/gcf-windows-amd64.zip"
+      end
+    end
+    redirect to(url)
+  end
+
+  def fetch_latest_release
     latest_cli_release = cli_releases.first
-    session[:cli_release_name] = latest_cli_release["name"]
-    cli_release_assets = latest_cli_release["assets"]
-    session[:cli_release_asset_darwin_amd64]  = cli_release_asset(cli_release_assets, "darwin")
-    session[:cli_release_asset_linux_amd64]   = cli_release_asset(cli_release_assets, "linux")
-    session[:cli_release_asset_windows_amd64] = cli_release_asset(cli_release_assets, "windows", "amd64")
-    session[:cli_release_asset_windows_386]   = cli_release_asset(cli_release_assets, "windows", "386")
+    @cli_release_name = latest_cli_release["name"]
+    @cli_release_assets = latest_cli_release["assets"]
   end
 
   def cli_release_name
-    session[:cli_release_name]
-  end
-
-  def cli_release_asset_darwin_amd64
-    session[:cli_release_asset_darwin_amd64]
-  end
-
-  def cli_release_asset_linux_amd64
-    session[:cli_release_asset_linux_amd64]
-  end
-
-  def cli_release_asset_windows_amd64
-    session[:cli_release_asset_windows_amd64]
-  end
-
-  def cli_release_asset_windows_386
-    session[:cli_release_asset_windows_386]
+    @cli_release_name
   end
 
   def cli_releases
