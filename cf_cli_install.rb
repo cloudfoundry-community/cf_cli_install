@@ -92,6 +92,18 @@ class CfCliInstall < Sinatra::Base
     cli_release_assets.find {|asset| asset["name"] =~ /#{platform}-#{arch}/ }
   end
 
+  def cli_release_asset_windows(arch)
+    cli_release_asset(@cli_release_assets, "windows", arch)
+  end
+
+  def cli_release_latest_windows(arch)
+    if arch == "amd64"
+      { "url" => "http://go-cli.s3.amazonaws.com/gcf-windows-amd64.zip", "name" => "gcf-windows-amd64.zip" }
+    else
+      { "url" => "http://go-cli.s3.amazonaws.com/gcf-windows-386.zip", "name" => "gcf-windows-386.zip" }
+    end
+  end
+
   def cli_name
     "gcf"
   end

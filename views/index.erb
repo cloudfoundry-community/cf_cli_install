@@ -45,7 +45,7 @@
           <h2>Install CLI for OS/X and Linux</h2>
           <pre style="clear:both;text-align:center;margin:0 -3em;margin-bottom:0.9em"><code id="selectable" onclick="selectText()">curl -s <%= binscript_path %> | bash</code></pre>
           <div class="col-1">
-            <p>Paste that at a Terminal prompt within a folder in your $PATH.</p>
+            <p>Paste that at a Terminal prompt.</p>
           </div>
           <div class="col-2">
             <p>The script only places the <code><%= cli_name %></code> executable in your current folder.</p>
@@ -57,9 +57,9 @@
         <div class="group row">
           <h2>Download CLI for Windows</h2>
           <p id="selectable" style="clear:both;text-align:center;margin:0 -3em;margin-bottom:0.9em">
-            <a download="<%= cli_release_asset_windows_amd64['name'] %>" href="<%= cli_release_asset_windows_amd64['url'] %>">64bit</a>
+            <a download="<%= cli_release_latest_windows("amd64")['name'] %>" href="<%= cli_release_latest_windows("amd64")['url'] %>">64bit</a>
             |
-            <a download="<%= cli_release_asset_windows_386['name'] %>" href="<%= cli_release_asset_windows_386['url'] %>">32bit</a>
+            <a download="<%= cli_release_latest_windows("386")['name'] %>" href="<%= cli_release_latest_windows("386")['url'] %>">32bit</a>
           </p>
           <div class="col-1">
             <p>1. Click to download then unarchive the ZIP file</p>
