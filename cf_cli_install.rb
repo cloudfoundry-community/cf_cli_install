@@ -83,6 +83,10 @@ class CfCliInstall < Sinatra::Base
     hostname.gsub(/:80/, '')
   end
 
+  def binscript_path
+    "https://raw.github.com/cloudfoundry-community/cf_cli_install/master/binscripts/cf-installer"
+  end
+
   # +platform+ - windows, linux, darwin
   def cli_release_asset(cli_release_assets, platform, arch = "amd64")
     cli_release_assets.find {|asset| asset["name"] =~ /#{platform}-#{arch}/ }
