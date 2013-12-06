@@ -83,7 +83,6 @@ download_file=${download_dir}/${asset_filename}
 
 cf_name_version="cf v6"
 download_url="${base_installer_url}/${version_or_latest}/${os_name}/${os_hardware}"
-echo $download_url
 
 echo "Downloading..."
 curl -L -H "Accept: application/octet-stream" $download_url -o ${download_file}
@@ -105,7 +104,7 @@ fi
 
 cd $current_path
 
-echo "Installed $cf_name_version"
+echo "Installed: $($cli_name --version)"
 echo
 echo "Please restart your terminal session or to get started right away run:"
 echo " source ${source_file}"
