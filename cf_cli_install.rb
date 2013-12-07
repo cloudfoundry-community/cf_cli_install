@@ -83,8 +83,12 @@ class CfCliInstall < Sinatra::Base
     hostname.gsub(/:80/, '')
   end
 
-  def binscript_path
-    "https://raw.github.com/cloudfoundry-community/cf_cli_install/master/binscripts/cf-installer"
+  def curl_cmd
+    if request_hostname =~ %r{^http://cli.cloudfoundry.org}
+      "https://raw.github.com/cloudfoundry-community/cf_cli_install/master/binscripts/cf-installer latest"
+    else
+      "https://raw.github.com/cloudfoundry-community/cf_cli_install/master/binscripts/cf-installer latest #{request_hostname}"
+    end
   end
 
   # +platform+ - windows, linux, darwin
