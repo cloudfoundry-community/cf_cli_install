@@ -17,7 +17,7 @@ if [[ $os_hardware != "x86_64" ]]; then
 fi
 
 version_or_latest=${1:-latest}                # alternately, 'version' to get latest versioned release
-base_installer_url=${2:-http://cli.cfapps.io} # pass 'http://localhost:9393' in local development
+base_installer_url=${2:-http://cli.cloudfoundry.org} # pass 'http://localhost:9393' in local development
 bin_dir=$3
 if [ "$bin_dir" == "" ]; then
   if [[ $EUID -ne 0 ]]; then
