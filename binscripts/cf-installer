@@ -85,7 +85,7 @@ cf_name_version="cf v6"
 download_url="${base_installer_url}/${version_or_latest}/${os_name}/${os_hardware}"
 
 echo "Downloading..."
-curl -L -H "Accept: application/octet-stream" $download_url -o ${download_file}
+curl -k -L -H "Accept: application/octet-stream" $download_url -o ${download_file}
 
 cd $bin_dir
 if [[ -f ${download_file} ]]; then
